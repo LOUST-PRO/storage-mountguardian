@@ -1,7 +1,13 @@
 [package]
-name = "storage-guardian"
+name = "storage-mountguardian"
 version = "0.1.0"
 edition = "2021"
+description = "A lightweight Rust daemon that monitors the Linux kernel ring buffer for SCSI/USB block device IO errors and proactively unmounts them to prevent Uninterruptible Sleep (D-state) locks."
+license = "Apache-2.0"
+repository = "https://github.com/LOUST-PRO/storage-mountguardian"
+keywords = ["linux", "udev", "systemd", "storage", "daemon"]
+categories = ["os::linux-apis", "command-line-utilities"]
+authors = ["LOUST-PRO <loust@example.com>"]
 
 [dependencies]
 regex = "1.10.4"
