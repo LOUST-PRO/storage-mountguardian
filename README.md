@@ -1,6 +1,7 @@
 # storage-mountguardian
 
 [![Crates.io](https://img.shields.io/crates/v/storage-mountguardian.svg)](https://crates.io/crates/storage-mountguardian)
+[![Downloads](https://img.shields.io/crates/d/storage-mountguardian.svg)](https://crates.io/crates/storage-mountguardian)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 `storage-mountguardian` is a highly efficient, lightweight Linux system daemon written in Rust. It acts as an emergency "eject button" for failing hardware, proactively preventing your system and applications from freezing when a USB drive, external HDD, or block device starts dropping connections or throwing hardware errors.
