@@ -17,7 +17,10 @@ This immediately breaks the IO wait loop, releasing any stuck processes and rest
 - **Zero-Polling Overhead:** Uses native Rust I/O to read `/dev/kmsg` cleanly.
 - **Regex-Powered Detection:** Instantly identifies `DID_NO_CONNECT`, `DID_BAD_TARGET`, and USB disconnects.
 - **Surgical Amputation:** Safely and aggressively lazy-unmounts the faulty device and its partitions to unblock the kernel block layer.
-- **Memory Safe:** Built entirely in safe Rust. Memory footprint is typically ~1MB.
+- **Memory Safe:** Built entirely in safe Rust. Memory footprint is typically ~4 MB RSS.
+- **Rate-limit dedup** *(v0.2.0+)*: Same device is not re-amputated within a 5 s window. Protects the system from self-DoS when a flaky USB emits hundreds of errors per second.
+- **Sysfs partition discovery** *(v0.2.0+)*: Reads `/sys/block/<dev>/` to enumerate actual partitions. Correctly handles `sd*` (sdb1, sdb2), `nvme*` (nvme0n1p1, nvme0n1p2), `mmcblk*`, and other block device naming conventions.
+- **Allocation bound** *(v0.2.0+)*: Drops kmsg records larger than 64 KiB to defend against unbounded buffer growth.
 
 ## Installation
 
@@ -29,27 +32,13 @@ cargo install storage-mountguardian
 
 ## Running as a systemd service (Recommended)
 
-To protect your system automatically in the background, set it up as a systemd service:
+A hardened systemd unit ships in [`contrib/storage-mountguardian.service`](contrib/storage-mountguardian.service). It uses `ProtectSystem=strict`, `ProtectHome=read-only`, `PrivateTmp`, and other reasonable hardening for a watchdog.
 
-1. Create a service file at `/etc/systemd/system/storage-mountguardian.service`:
-
-```ini
-[Unit]
-Description=Storage Mount Guardian Daemon (Hardware IO Health Monitor)
-After=systemd-udevd.service
-
-[Service]
-Type=simple
-ExecStart=/home/user/.cargo/bin/storage-mountguardian
-Restart=always
-RestartSec=5
-User=root
-Group=root
-
-[Install]
-WantedBy=multi-user.target
-```
-*(Make sure to adjust the `ExecStart` path to where your binary is located, typically `/usr/local/bin/` if installed system-wide).*
+1. Copy the unit into place:
+   ```bash
+   sudo install -m 0644 contrib/storage-mountguardian.service /etc/systemd/system/
+   ```
+   *(If you installed via `cargo install`, edit the unit's `ExecStart` to point at `~/.cargo/bin/storage-mountguardian` instead of `/usr/local/bin/`.)*
 
 2. Enable and start the service:
 ```bash
