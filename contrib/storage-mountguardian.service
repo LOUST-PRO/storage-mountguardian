@@ -1,0 +1,29 @@
+[Unit]
+Description=Storage Mount Guardian Daemon (Hardware IO Health Monitor)
+Documentation=https://github.com/LOUST-PRO/storage-mountguardian
+After=systemd-udevd.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/storage-mountguardian
+Restart=always
+RestartSec=5
+User=root
+Group=root
+# Logging a journal systemd (no archivos sueltos)
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=storage-mountguardian
+# Protecciones razonables para un watchdog
+NoNewPrivileges=false
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target
