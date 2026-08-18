@@ -13,7 +13,7 @@ Thanks for your interest. Bug reports and PRs are welcome.
 
 ## Scope
 
-- **LZT hardening** (sanitization, no telemetry, defensive defaults) is in scope
+- **Hardening** (sanitization, no telemetry, fail-closed defaults) is in scope
 - **Upstream features** are accepted but should be small + reviewable
 - **Large refactors** need prior discussion in an issue
 
