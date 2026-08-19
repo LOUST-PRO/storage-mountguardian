@@ -1,0 +1,27 @@
+/* Storage Mount Guardian — mdbook theme overrides
+   Keep this minimal. The default rust theme is the right baseline;
+   only override what's truly necessary. */
+
+/* Slightly narrower content column for code-heavy chapters */
+.content main { max-width: 880px; }
+
+/* Tighter table spacing on the comparison chapter */
+table { border-collapse: collapse; }
+table th, table td { padding: 0.45rem 0.85rem; }
+
+/* Code-block font: keep mdbook's default but force a size that
+   matches our prose rhythm. */
+pre code { font-size: 0.875em; line-height: 1.55; }
+
+/* Inline code (Cargo.toml paths, etc.) gets a subtle background. */
+:not(pre) > code {
+    padding: 0.10em 0.35em;
+    border-radius: 3px;
+}
+
+/* Header anchors — slightly muted color so they don't dominate. */
+.header-anchor { opacity: 0.4; }
+:hover > .header-anchor { opacity: 1.0; }
+
+/* Hide the "edit this page" link from non-edit-builds by dimming it. */
+.edit-page { font-size: 0.85em; opacity: 0.7; }
